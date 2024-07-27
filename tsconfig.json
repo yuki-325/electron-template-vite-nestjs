@@ -1,16 +1,60 @@
 {
   "compilerOptions": {
+    /**
+     * JavaScriptのターゲットバージョン
+     * @type {string}
+     */
     "target": "ESNext",
+    
+    /**
+     * JSX構文のプリザーブオプション
+     * @type {string}
+     */
     "jsx": "preserve",
+    
+    /**
+     * コンパイル時に使用するライブラリ
+     * @type {Array<string>}
+     */
     "lib": [
       "esnext",
       "dom"
     ],
+    
+    /**
+     * デコレーターのメタデータを出力
+     * @type {boolean}
+     */
     "emitDecoratorMetadata": true,
+    
+    /**
+     * 実験的なデコレーター機能を有効化
+     * @type {boolean}
+     */
     "experimentalDecorators": true,
+    
+    /**
+     * ベースURL
+     * @type {string}
+     */
     "baseUrl": ".",
+    
+    /**
+     * 使用するモジュールシステム
+     * @type {string}
+     */
     "module": "ESNext",
+    
+    /**
+     * モジュール解決の戦略
+     * @type {string}
+     */
     "moduleResolution": "node",
+    
+    /**
+     * パスエイリアスの設定
+     * @type {Object}
+     */
     "paths": {
       "@render/*": [
         "src/render/*"
@@ -19,16 +63,56 @@
         "src/main/*"
       ]
     },
+    
+    /**
+     * JSONモジュールの解決を有効化
+     * @type {boolean}
+     */
     "resolveJsonModule": true,
+    
+    /**
+     * 使用する型定義ファイル
+     * @type {Array<string>}
+     */
     "types": [
       "vite/client",
       "./src/preload"
     ],
+    
+    /**
+     * 厳密な型チェックを無効化
+     * @type {boolean}
+     */
     "strict": false,
+    
+    /**
+     * 暗黙のany型を許容
+     * @type {boolean}
+     */
     "noImplicitAny": false,
+    
+    /**
+     * 出力を生成しない
+     * @type {boolean}
+     */
     "noEmit": true,
+    
+    /**
+     * ソースマップを生成
+     * @type {boolean}
+     */
     "sourceMap": true,
+    
+    /**
+     * ESモジュールとの互換性を有効化
+     * @type {boolean}
+     */
     "esModuleInterop": true,
+    
+    /**
+     * 型チェックをスキップ
+     * @type {boolean}
+     */
     "skipLibCheck": true
   },
   "include": [
