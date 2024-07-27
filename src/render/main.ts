@@ -1,7 +1,23 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import 'buefy/dist/buefy.css';
+import { createApp } from 'vue';
+// Components
+import App from './App.vue';
+// Vuetify
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 
+/**
+ * Vuetifyのインスタンスを作成
+ */
+const vuetify = createVuetify({
+    components,
+    directives,
+});
 
+/**
+ * Vueアプリケーションを作成し、Vuetifyを使用する
+ */
 createApp(App)
-    .mount('#app')
+    .use(vuetify)
+    .mount('#app');

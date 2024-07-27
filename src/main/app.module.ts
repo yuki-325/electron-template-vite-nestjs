@@ -1,38 +1,50 @@
-import { join } from 'node:path'
-import { Module } from '@nestjs/common'
-import { ElectronModule } from '@doubleshot/nest-electron'
-import { BrowserWindow, app } from 'electron'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-
+// 必要なモジュールのインポート
+import { join } from 'node:path' // ファイルパスを結合するためのNode.jsのパスモジュール
+import { Module } from '@nestjs/common' // NestJSのモジュールデコレーター
+import { ElectronModule } from '@doubleshot/nest-electron' // ElectronとNestJSを統合するためのモジュール
+import { BrowserWindow, app } from 'electron' // ElectronのBrowserWindowとappモジュール
+import { AppController } from './app.controller' // アプリケーションのコントローラ
+import { AppService } from './app.service' // アプリケーションのサービス
+/**
+ * アプリケーションモジュール
+ */
 @Module({
-  imports: [ElectronModule.registerAsync({
-    useFactory: async () => {
-      const isDev = !app.isPackaged
-      const win = new BrowserWindow({
-        width: 1024,
-        height: 768,
-        autoHideMenuBar: true,
-        webPreferences: {
-          contextIsolation: true,
-          preload: join(__dirname, '../preload/index.js'),
-        },
-      })
+  // 他のモジュールをインポート
+  imports: [
+    ElectronModule.registerAsync({
+      // 非同期にElectronモジュールを設定
+      useFactory: async () => {
+        // 開発モードかどうかを判定
+        const isDev = !app.isPackaged;
 
-      win.on('closed', () => {
-        win.destroy()
-      })
+        // 新しいブラウザウィンドウを作成
+        const win = new BrowserWindow({
+          width: 1024, // ウィンドウの幅
+          height: 768, // ウィンドウの高さ
+          autoHideMenuBar: true, // メニューバーを自動で隠す
+          webPreferences: {
+            contextIsolation: true, // コンテキストの分離を有効にする
+            preload: join(__dirname, '../preload/index.js'), // プリロードスクリプトのパス
+          },
+        });
 
-      const URL = isDev
-        ? process.env.DS_RENDERER_URL
-        : `file://${join(app.getAppPath(), 'dist/render/index.html')}`
+        // ウィンドウが閉じられた時の処理
+        win.on('closed', () => {
+          win.destroy(); // ウィンドウを破棄
+        });
 
-      win.loadURL(URL)
+        // 開発モードと本番モードで異なるURLをロード
+        const URL = isDev
+          ? process.env.DS_RENDERER_URL // 開発モードでは環境変数からURLを取得
+          : `file://${join(app.getAppPath(), 'dist/render/index.html')}`; // 本番モードではローカルのHTMLファイルを指定
 
-      return { win }
-    },
-  })],
-  controllers: [AppController],
-  providers: [AppService],
+        win.loadURL(URL); // ウィンドウにURLをロード
+
+        return { win }; // ウィンドウオブジェクトを返す
+      },
+    }),
+  ],
+  controllers: [AppController], // モジュールのコントローラー
+  providers: [AppService], // モジュールのサービス
 })
-export class AppModule { }
+export class AppModule {}

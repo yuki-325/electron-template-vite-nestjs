@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@doubleshot/nest-electron": "^0.2.5",
+    "@mdi/font": "^7.4.47",
     "@nestjs/common": "^10.3.8",
     "@nestjs/core": "^10.3.8",
     "@nestjs/microservices": "^10.3.8",
@@ -34,7 +35,9 @@
     "typescript": "5.5.4",
     "vite": "5.3.5",
     "vite-plugin-doubleshot": "0.0.16",
-    "vue-tsc": "2.0.29"
+    "vite-plugin-vuetify": "^2.0.3",
+    "vue-tsc": "2.0.29",
+    "vuetify": "^3.6.13"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
