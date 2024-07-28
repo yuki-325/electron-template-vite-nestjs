@@ -5,6 +5,8 @@ import { ElectronModule } from '@doubleshot/nest-electron' // ElectronとNestJS�
 import { BrowserWindow, app } from 'electron' // ElectronのBrowserWindowとappモジュール
 import { AppController } from './app.controller' // アプリケーションのコントローラ
 import { AppService } from './app.service' // アプリケーションのサービス
+import { Config, loadConfig } from 'src/util/config'
+import { existsSync, mkdirSync, copyFileSync } from 'fs'
 /**
  * アプリケーションモジュール
  */
@@ -16,11 +18,32 @@ import { AppService } from './app.service' // アプリケーションのサー�
       useFactory: async () => {
         // 開発モードかどうかを判定
         const isDev = !app.isPackaged;
+        // 設定ファイルのパスを決定
+        const userDataPath = app.getPath('userData');
+        const configDir = join(userDataPath, 'config');
+        const configFilePath = join(configDir, 'config.json');
+        
+        // 初回起動時にconfigディレクトリとファイルをコピー
+        if (!existsSync(configDir)) {
+          mkdirSync(configDir);
+        }
+
+        if (!existsSync(configFilePath)) {
+          const resourceConfigPath = join(__dirname, '../config', 'config.json');
+          if (existsSync(resourceConfigPath)) {
+            copyFileSync(resourceConfigPath, configFilePath);
+          } else {
+            console.error(`Resource config file not found at ${resourceConfigPath}`);
+          }
+        }
+
+        // 設定ファイルを読み込む
+        const config: Config = loadConfig(configFilePath);
 
         // 新しいブラウザウィンドウを作成
         const win = new BrowserWindow({
-          width: 1024, // ウィンドウの幅
-          height: 768, // ウィンドウの高さ
+          width: config.window.width, // ウィンドウの幅
+          height: config.window.height, // ウィンドウの高さ
           autoHideMenuBar: true, // メニューバーを自動で隠す
           webPreferences: {
             contextIsolation: true, // コンテキストの分離を有効にする

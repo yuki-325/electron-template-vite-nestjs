@@ -13,6 +13,13 @@ const config = {
     'dist/preload/**/*',
     'dist/render/**/*',
   ],
-}
+  extraResources: [
+    {
+      from: 'config/', // プロジェクトのルートディレクトリからconfigディレクトリをコピー
+      to: 'config/',   // ビルド成果物のルートに配置
+      filter: ['**/*']
+    }
+  ],
+};
 
-module.exports = config
+module.exports = config;
