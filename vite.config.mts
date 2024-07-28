@@ -2,7 +2,8 @@ import { join, resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePluginDoubleshot } from 'vite-plugin-doubleshot'
-import { copyFileSync, existsSync, mkdirSync } from 'fs'
+import { existsSync, } from 'fs'
+import fsExtra from 'fs-extra'
 
 
 // Viteプラグインとしてファイルをコピーする関数
@@ -10,16 +11,18 @@ function copyConfigFile() {
   return {
     name: 'copy-config-file',
     buildStart() {
-      const fileName = "config.json";
-      const srcPath = resolve(__dirname, "config", fileName);
-      const destDir = resolve(__dirname, 'dist', "config");
-      const destPath = resolve(destDir, fileName);
-
-      if (!existsSync(destDir)) {
-        mkdirSync(destDir, { recursive: true })
+      const srcPath = resolve(__dirname, "config");
+      const destPath = resolve(__dirname, 'dist', "config");
+      if (!existsSync(srcPath)) {
+        console.error(`Source config directory not found at ${srcPath}`);
+        return;
       }
 
-      copyFileSync(srcPath, destPath);
+      try {
+        fsExtra.copySync(srcPath, destPath);
+      } catch (error) {
+        console.error('Error copying config directory:', error);
+      }
     }
   }
 }

@@ -5,8 +5,10 @@ import { ElectronModule } from '@doubleshot/nest-electron' // ElectronとNestJS�
 import { BrowserWindow, app } from 'electron' // ElectronのBrowserWindowとappモジュール
 import { AppController } from './app.controller' // アプリケーションのコントローラ
 import { AppService } from './app.service' // アプリケーションのサービス
-import { Config, loadConfig } from 'src/util/config'
+import { Config } from 'src/config/config'
 import { existsSync, mkdirSync, copyFileSync } from 'fs'
+import { ensureConfigFile, loadConfig } from 'src/util/configuration-reader'
+import { initializeLogger } from 'src/config/log-config'
 /**
  * アプリケーションモジュール
  */
@@ -18,27 +20,14 @@ import { existsSync, mkdirSync, copyFileSync } from 'fs'
       useFactory: async () => {
         // 開発モードかどうかを判定
         const isDev = !app.isPackaged;
-        // 設定ファイルのパスを決定
-        const userDataPath = app.getPath('userData');
-        const configDir = join(userDataPath, 'config');
-        const configFilePath = join(configDir, 'config.json');
-        
-        // 初回起動時にconfigディレクトリとファイルをコピー
-        if (!existsSync(configDir)) {
-          mkdirSync(configDir);
-        }
-
-        if (!existsSync(configFilePath)) {
-          const resourceConfigPath = join(__dirname, '../config', 'config.json');
-          if (existsSync(resourceConfigPath)) {
-            copyFileSync(resourceConfigPath, configFilePath);
-          } else {
-            console.error(`Resource config file not found at ${resourceConfigPath}`);
-          }
-        }
 
         // 設定ファイルを読み込む
+        const configFilePath: string = ensureConfigFile("config.json");
         const config: Config = loadConfig(configFilePath);
+
+        // loggerの初期化
+        const logConfigFilePath: string = ensureConfigFile("log-config.json");
+        initializeLogger(logConfigFilePath);
 
         // 新しいブラウザウィンドウを作成
         const win = new BrowserWindow({
@@ -70,4 +59,4 @@ import { existsSync, mkdirSync, copyFileSync } from 'fs'
   controllers: [AppController], // モジュールのコントローラー
   providers: [AppService], // モジュールのサービス
 })
-export class AppModule {}
+export class AppModule { }
