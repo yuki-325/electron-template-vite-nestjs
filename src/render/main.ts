@@ -16,7 +16,7 @@ const vuetify = createVuetify({
 });
 
 /**
- * Vueアプリケーションを作成し、Vuetifyを使用する
+ * Vueアプリケーションを作成
  */
 createApp(App)
     .use(vuetify)
