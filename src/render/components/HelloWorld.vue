@@ -27,10 +27,10 @@ const msg = ref('') // 送信メッセージを保持するリアクティブ変
 async function sendMsg(): Promise<void> {
   try {
     logMessage.value += `[render]: ${msg.value} \n` // 送信メッセージをログに追加
-    log.info("render logger test", msg.value);
-    log.debug("render logger test", msg.value);
-    log.warn("render logger test", msg.value);
-    log.error("render logger test", msg.value);
+    // log.info("render logger test", msg.value);
+    // log.debug("render logger test", msg.value);
+    // log.warn("render logger test", msg.value);
+    // log.error("render logger test", msg.value);
     const data = await sendMsgToMainProcess(msg.value) // メインプロセスにメッセージを送信
     logMessage.value += `[main]: ${data} \n` // メインプロセスからの応答をログに追加
   }

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import VuetifyDialog from './components/VuetifyDialog.vue'
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" class="logo">
-  <HelloWorld title="Vite + Electron & Esbuild" />
+  <!-- <HelloWorld title="Vite + Electron & Esbuild" /> -->
+  <VuetifyDialog></VuetifyDialog>
 </template>
 
 <style>
@@ -16,6 +17,7 @@ import HelloWorld from './components/HelloWorld.vue'
   color: #2c3e50;
   margin-top: 60px;
 }
+
 .logo {
   width: 400px;
   border-radius: 1rem;
